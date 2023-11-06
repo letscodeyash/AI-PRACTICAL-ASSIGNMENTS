@@ -1,0 +1,31 @@
+def selection_sort(jobs):
+    n = len(jobs)
+    for i in range(n):
+        max_idx = i
+        for j in range(i + 1, n):
+            if jobs[j][2] > jobs[max_idx][2]:
+                max_idx = j
+        jobs[i], jobs[max_idx] = jobs[max_idx], jobs[i]
+
+def job_scheduling(jobs):
+    selection_sort(jobs)  # Sort jobs by profit using selection sort
+    n = len(jobs)
+    result = []
+    schedule = [False] * n
+    max_profit = 0
+    
+    for i in range(n):
+        for j in range((min(n, jobs[i][1]) - 1), -1, -1):
+            if schedule[j] is False:
+                schedule[j] = True
+                result.append(jobs[i])
+                max_profit += jobs[i][2]  # Update the total profit
+                break
+    
+    return result, max_profit
+
+# Sample Input and Output based on Job Profits
+jobs = [(3, 10, 20), (1, 2, 50), (6, 19, 100), (2, 100, 200)]
+scheduled_jobs, total_profit = job_scheduling(jobs)
+print("Scheduled Jobs:", scheduled_jobs)
+print("Maximum Profit:", total_profit)
