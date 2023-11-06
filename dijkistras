@@ -1,0 +1,43 @@
+def dijkstra(graph, start):
+    # Initialize distances dictionary with infinity for all nodes except the start node
+    distances = {node: float('infinity') for node in graph}
+    distances[start] = 0
+    
+    # List to keep track of unvisited nodes
+    unvisited_nodes = list(graph)
+    
+    while unvisited_nodes:
+        # Find the node with the smallest distance in the unvisited nodes list
+        min_distance_node = None
+        for node in unvisited_nodes:
+            if min_distance_node is None or distances[node] < distances[min_distance_node]:
+                min_distance_node = node
+        
+        # Remove the node with the smallest distance from the unvisited nodes list
+        unvisited_nodes.remove(min_distance_node)
+        
+        # Update distances for neighbors if a shorter path is found
+        for neighbor, weight in graph[min_distance_node].items():
+            distance = distances[min_distance_node] + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+    
+    return distances
+
+# Example usage
+graph = {
+    0: {1: 4, 2: 5},
+    1: {0: 4, 3: 9, 2: 11,4:7},
+    2: {0: 5, 1: 11, 4: 3},
+    3: {1: 9, 5: 2, 4: 13},
+    4: {2: 3,1:7, 5:6,3:13},
+    5: {4: 6, 3: 2}
+}
+
+start_node = 0
+shortest_distances = dijkstra(graph, start_node)
+
+# Print the distances in the specified format
+print("Vertex\tDistance from Source")
+for node, distance in shortest_distances.items():
+    print(f"{node}\t{distance}")
